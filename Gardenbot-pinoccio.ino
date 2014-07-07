@@ -14,6 +14,7 @@
 #include <lwm.h>
 #include <js0n.h>
 #include <util/StringBuffer.h>
+#include <stdlib.h>
 extern "C" {
 #include <key/key.h>
 }
@@ -103,12 +104,16 @@ void getTemp(float *dht_data) {
 static StringBuffer DHTReportHQ(void) {
   float dht_data[4];
   StringBuffer report(100);
-  
-  getTemp(&dht_data[0]);
-  report.appendSprintf("[%d,[%d,%d,%d],[%d,%d,%d]",
-        keyMap("dht"), "humidity", "temperature_c", "temperature_f",
-        dht_data[0], dht_data[1], dht_data[2]
-  );
+  getTemp(dht_data);
+  char h[8], t[8], f[8], hi[8];
+  dtostrf(dht_data[0], 3, 2, h);
+  dtostrf(dht_data[1], 3, 2, t);
+  dtostrf(dht_data[2], 3, 2, f);
+  dtostrf(dht_data[3], 3, 2, hi);
+
+  report.appendSprintf("[%d,[%d,%d,%d,%d],[%s,%s,%s,%s]]",
+        keyMap("dht", 0), keyMap("humidity", 0), keyMap("temp_c", 0), keyMap("temp_f", 0), keyMap("heat_index", 0), h, t, f, hi
+    );
   
   return Scout.handler.report(report);
 }
@@ -120,7 +125,7 @@ numvar dhtReport(void) {
 
 void tempPrint() {
   float dht_data[4];
-  getTemp(&dht_data[0]);
+  getTemp(dht_data);
   
   Serial.print("Humidity: ");
   Serial.print(dht_data[0]);
