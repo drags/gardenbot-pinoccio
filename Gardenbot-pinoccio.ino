@@ -14,7 +14,9 @@
 #include <lwm.h>
 #include <js0n.h>
 #include <util/StringBuffer.h>
+extern "C" {
 #include <key/key.h>
+}
 
 #include "version.h"
 
