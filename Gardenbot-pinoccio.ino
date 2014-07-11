@@ -51,8 +51,11 @@ void setup() {
   addBitlashFunction("dht.print", (bitlash_function)tempPrint);
   addBitlashFunction("dht.report", (bitlash_function)dhtReport);
 
-  Serial.print("My ARDUINO is ");
-  Serial.println(ARDUINO);
+  // DFRobot Moisture sensors
+  addBitlashFunction("moisture.report", (bitlash_function)moistureReport);
+
+//  Serial.print("My ARDUINO is ");
+//  Serial.println(ARDUINO);
   // TSL2561 Light sensor
 //TSL  if(!tsl.begin())
 //TSL  {
@@ -76,8 +79,6 @@ void setup() {
 
   // Moisture
   //Scout.
-  addBitlashFunction("moisture.report", (bitlash_function)moistureReport);
-
 }
 
 void loop() {
@@ -150,14 +151,27 @@ void tempPrint() {
   
 }
 
+numvar moistureReport(void) {
+  speol(moistureReportHQ());
+  return 1;
 }
 
+static StringBuffer moistureReportHQ(void) {
   StringBuffer report(100);
 
+  report.appendSprintf("[%d,[%d,%d,%d],[%d,%d,%d]]",
+        keyMap("moisture", 0),
+        keyMap("apples", 0),
+        keyMap("bananas", 0),
+        keyMap("cucumbers", 0),
         Scout.pinRead(Scout.getPinFromName("a0")),
         Scout.pinRead(Scout.getPinFromName("a1")),
         Scout.pinRead(Scout.getPinFromName("a2"))
   );
+  Serial.println(report);
+  return Scout.handler.report(report);
+}
+
 }
 
 //TSLnumvar lightPrint(void) {
