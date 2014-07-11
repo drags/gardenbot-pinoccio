@@ -30,10 +30,10 @@ args = ap.parse_args()
 
 def graphite_send(msg):
     '''Bare socket push to graphite'''
-    with socket.socket() as sock:
-        sock.connect((args.carbon_server, args.carbon_port))
-        sock.sendall(msg)
-        sock.close()
+    sock = socket.socket()
+    sock.connect((args.carbon_server, args.carbon_port))
+    sock.sendall(msg)
+    sock.close()
 
 
 def send_data_to_graphite(msg):
@@ -46,7 +46,7 @@ def send_data_to_graphite(msg):
         # Filter keys with non numeric values
         try:
             float(msg[k])
-        except ValueError:
+        except (ValueError, TypeError):
             continue
 
         graphite_msg.write('%s.%s.%s %s %s\n' % (args.prefix, msg_type, k, msg[k], msg_time)) #noqa
@@ -88,9 +88,9 @@ while True:
             continue
 
         # Filter for correct scout, when filters are set
-        account_match = (msg_data['account'] == args.account_id) if args['account_id'] is not None else True #noqa
-        troop_match = msg_data['troop'] == args.troop_id if args['troop_id'] is not None else True #noqa
-        scout_match = msg_data['scout'] == args.scout_id if args['scout_id'] is not None else True #noqa
+        account_match = (msg_data['account'] == args.account_id) if args.account_id is not None else True #noqa
+        troop_match = msg_data['troop'] == args.troop_id if args.troop_id is not None else True #noqa
+        scout_match = msg_data['scout'] == args.scout_id if args.scout_id is not None else True #noqa
         value_dict = type(msg_data['value']) == dict  # noqa ensure there are values to send
 
         if account_match and troop_match and scout_match and value_dict:
