@@ -17,13 +17,16 @@ class StripAction(argparse.Action):
 ap = argparse.ArgumentParser(description='Pipe Pinocc.io api to graphite')
 ap.add_argument('-A', '--auth', help='Token for accessing api.pinocc.io',
                 required=True, metavar='API_TOKEN')
-ap.add_argument('-a', '--account_id', help='Filter by account ID (numeric)')
-ap.add_argument('-t', '--troop_id', help='Filter by troop ID (numeric)')
-ap.add_argument('-s', '--scout_id', help='Filter by scout ID (numeric)')
+ap.add_argument('-a', '--account_id', help='Filter by account ID (numeric)',
+                required=True)
+ap.add_argument('-t', '--troop_id', help='Filter by troop ID (numeric)',
+                required=True)
+ap.add_argument('-s', '--scout_id', help='Filter by scout ID (numeric)',
+                required=True)
 ap.add_argument('-C', '--carbon_server', help='Carbon server address',
                 required=True)
 ap.add_argument('-P', '--carbon_port', help='Carbon server port', default=2003)
-ap.add_argument('-p', '--prefix', help='Metric prefix (default: gardenbot.',
+ap.add_argument('-p', '--prefix', help='Graphite stat prefix (default: gardenbot.', #noqa
                 default='gardenbot', action=StripAction)
 args = ap.parse_args()
 
