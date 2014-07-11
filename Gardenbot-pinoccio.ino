@@ -56,7 +56,7 @@ void setup() {
 
   // Gardenbot
   addBitlashFunction("garden.report", (bitlash_function)gardenReport);
-  
+
 //  Serial.print("My ARDUINO is ");
 //  Serial.println(ARDUINO);
   // TSL2561 Light sensor
@@ -89,7 +89,7 @@ void loop() {
   // Add custom loop code here
 }
 
-void getTemp(float *dht_data) { 
+void getTemp(float *dht_data) {
   // Reading temperature or humidity takes about 250 milliseconds!
   // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
   float h = dht.readHumidity();
@@ -112,9 +112,9 @@ void getTemp(float *dht_data) {
   dht_data[1] = t;
   dht_data[2] = f;
   dht_data[3] = hi;
-}  
-  
-static StringBuffer DHTReportHQ(void) {
+}
+
+static StringBuffer dhtReportHQ(void) {
   float dht_data[4];
   StringBuffer report(100);
   getTemp(dht_data);
@@ -127,19 +127,19 @@ static StringBuffer DHTReportHQ(void) {
   report.appendSprintf("[%d,[%d,%d,%d,%d],[%s,%s,%s,%s]]",
         keyMap("dht", 0), keyMap("humidity", 0), keyMap("temp_c", 0), keyMap("temp_f", 0), keyMap("heat_index", 0), h, t, f, hi
     );
-  
+
   return Scout.handler.report(report);
 }
 
-numvar dhtReport(void) {
-  speol(DHTReportHQ());
-  return true;
+static numvar dhtReport(void) {
+  speol(dhtReportHQ());
+  return 1;
 }
 
 void tempPrint() {
   float dht_data[4];
   getTemp(dht_data);
-  
+
   Serial.print("Humidity: ");
   Serial.print(dht_data[0]);
   Serial.print(" %\t");
@@ -151,7 +151,7 @@ void tempPrint() {
   Serial.print("Heat index: ");
   Serial.print(dht_data[3]);
   Serial.println(" *F");
-  
+
 }
 
 numvar moistureReport(void) {
