@@ -54,6 +54,9 @@ void setup() {
   // DFRobot Moisture sensors
   addBitlashFunction("moisture.report", (bitlash_function)moistureReport);
 
+  // Gardenbot
+  addBitlashFunction("garden.report", (bitlash_function)gardenReport);
+  
 //  Serial.print("My ARDUINO is ");
 //  Serial.println(ARDUINO);
   // TSL2561 Light sensor
@@ -172,6 +175,12 @@ static StringBuffer moistureReportHQ(void) {
   return Scout.handler.report(report);
 }
 
+numvar gardenReport(void) {
+  delay(3000); // wait for Pinoccio/DHT startup
+  speol(dhtReportHQ());
+  delay(2000); // breathe time
+  speol(moistureReportHQ());
+  delay(3000); // time for reports to be pushed onto mesh
 }
 
 //TSLnumvar lightPrint(void) {
