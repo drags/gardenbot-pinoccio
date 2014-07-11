@@ -7,5 +7,6 @@ Early alpha stage. Pushing data to graphite. Soil moisture sensors are pegged at
 ## api-to-graphite.py
 
 Currently:
+
 	- is a loader for a single scout (requires account/troup/scout id). this script will probably be superseded by a general purpose pinoccio api -> graphite collector
 	- doesn't enforce sane filtering (ie: doesn't complain about missing account id or troop id filter when given a scout id)
