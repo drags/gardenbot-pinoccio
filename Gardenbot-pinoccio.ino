@@ -29,9 +29,9 @@ extern "C" {
 DHT dht(DHTPIN, DHTTYPE);
 
 //TSL2561 Sensor library from AdaFruit: https://github.com/adafruit/Adafruit_TSL2561
-#include <Adafruit_Sensor.h>
-#include <Adafruit_TSL2561_U.h>
-Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
+//TSL#include <Adafruit_Sensor.h>
+//TSL#include <Adafruit_TSL2561_U.h>
+//TSLAdafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
 
 
 void setup() {
@@ -45,25 +45,25 @@ void setup() {
   Serial.print("My ARDUINO is ");
   Serial.println(ARDUINO);
   // TSL2561 Light sensor
-  if(!tsl.begin())
-  {
-    /* There was a problem detecting the TSL2561 ... check your connections */
-    Serial.print("Ooops, no TSL2561 detected ... Check your wiring or I2C ADDR!");
-    while(1);
-  } else {
-    Serial.println("Apparently found TSL sensor");
-  }
+//TSL  if(!tsl.begin())
+//TSL  {
+//TSL    /* There was a problem detecting the TSL2561 ... check your connections */
+//TSL    Serial.print("Ooops, no TSL2561 detected ... Check your wiring or I2C ADDR!");
+//TSL    while(1);
+//TSL  } else {
+//TSL    Serial.println("Apparently found TSL sensor");
+//TSL  }
   /* You can also manually set the gain or enable auto-gain support */
   // tsl.setGain(TSL2561_GAIN_1X);      /* No gain ... use in bright light to avoid sensor saturation */
   //tsl.setGain(TSL2561_GAIN_16X);     /* 16x gain ... use in low light to boost sensitivity */
-  tsl.enableAutoRange(true);            /* Auto-gain ... switches automatically between 1x and 16x */
+//TSL  tsl.enableAutoRange(true);            /* Auto-gain ... switches automatically between 1x and 16x */
 
   /* Changing the integration time gives you better sensor resolution (402ms = 16-bit data) */
   //tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_13MS);      /* fast but low resolution */
-  tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_101MS);  /* medium resolution and speed   */
+//TSL  tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_101MS);  /* medium resolution and speed   */
   // tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_402MS);  /* 16-bit data but slowest conversions */
 
-  addBitlashFunction("tsl.print", (bitlash_function)lightPrint);
+//TSL  addBitlashFunction("tsl.print", (bitlash_function)lightPrint);
 
   // Moisture
   //Scout.
@@ -141,46 +141,37 @@ void tempPrint() {
   
 }
 
-
-numvar lightPrint(void) {
-  /* Get a new sensor event */
-  sensors_event_t event;
-  tsl.getEvent(&event);
-
-  Serial.print("Got event from sensor: ");
-  Serial.println(event.sensor_id);
-  Serial.print("Got event at time: ");
-  Serial.println(event.timestamp);
-
-  /* Display the results (light is measured in lux) */
-  if (event.light)
-  {
-    Serial.print(event.light); Serial.println(" lux");
-  }
-  else
-  {
-    /* If event.light = 0 lux the sensor is probably saturated
-       and no reliable data could be generated! */
-    Serial.println("Sensor overload");
-    Serial.print(event.light); Serial.println(" lux");
-  }
 }
 
-//numvar lightGain(void) {
-//  a = getarg(
-numvar moistureReport(void) {
-  int numSensors = getarg(1);
   StringBuffer report(100);
 
-  report.appendSprintf("[%d,[%d,%d,%d],[%d,%d,%d]",
-        "moisture",
         Scout.pinRead(Scout.getPinFromName("a0")),
         Scout.pinRead(Scout.getPinFromName("a1")),
         Scout.pinRead(Scout.getPinFromName("a2"))
   );
-  //for (int i = 0; i < numSensors; i++) {
-    //StringBuffer sensor_pin(2);
-    //sensor_pin.appendSprintf("a%d", i);
-    //Serial.print("Looking for analog pin: "); Serial.println(sensor_pin);
-  //}
 }
+
+//TSLnumvar lightPrint(void) {
+//TSL  /* Get a new sensor event */
+//TSL  sensors_event_t event;
+//TSL  tsl.getEvent(&event);
+
+//TSL  Serial.print("Got event from sensor: ");
+//TSL  Serial.println(event.sensor_id);
+//TSL  Serial.print("Got event at time: ");
+//TSL  Serial.println(event.timestamp);
+
+  /* Display the results (light is measured in lux) */
+//TSL  if (event.light)
+//TSL  {
+//TSL    Serial.print(event.light); Serial.println(" lux");
+//TSL  }
+//TSL  else
+//TSL  {
+    /* If event.light = 0 lux the sensor is probably saturated
+       and no reliable data could be generated! */
+//TSL    Serial.println("Sensor overload");
+//TSL    Serial.print(event.light); Serial.println(" lux");
+//TSL  }
+//TSL}
+
