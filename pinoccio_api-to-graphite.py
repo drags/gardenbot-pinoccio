@@ -74,13 +74,13 @@ while True:
     # Process streaming response
     for msg in r.iter_lines():
         try:
-            _d = json.loads(msg)
+            msg_json = json.loads(msg)
         except ValueError:
             print "Got non json message: ", msg
             continue
 
-        # {'data':{...'value':{'custom_1..n'}}}
-        msg_data = _d['data']
+        # {'data':{...'value':{'type':"",'_t':"",'custom_1..n'}}}
+        msg_data = msg_json['data']
         msg_content = msg_data['value']
 
         if not set(('account', 'troop', 'scout')).issubset(msg_data.keys()):
@@ -89,9 +89,9 @@ while True:
 
         # Filter for correct scout, when filters are set
         account_match = (msg_data['account'] == args.account_id) if args.account_id is not None else True #noqa
-        troop_match = msg_data['troop'] == args.troop_id if args.troop_id is not None else True #noqa
-        scout_match = msg_data['scout'] == args.scout_id if args.scout_id is not None else True #noqa
-        value_dict = type(msg_data['value']) == dict  # noqa ensure there are values to send
+        troop_match = (msg_data['troop'] == args.troop_id) if args.troop_id is not None else True #noqa
+        scout_match = (msg_data['scout'] == args.scout_id) if args.scout_id is not None else True #noqa
+        value_dict = type(msg_data['value']) == dict  # TODO !str?
 
         if account_match and troop_match and scout_match and value_dict:
             send_data_to_graphite(msg_content)
