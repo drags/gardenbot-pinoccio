@@ -36,6 +36,15 @@ DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
   Scout.setup(SKETCH_NAME, SKETCH_REVISION, SKETCH_BUILD);
+  keyMap("dht", 0);
+  keyMap("humidity", 0);
+  keyMap("temp_c", 0);
+  keyMap("temp_f", 0);
+  keyMap("heat_index", 0);
+  keyMap("moisture", 0);
+  keyMap("apples", 0);
+  keyMap("bananas", 0);
+  keyMap("cucumbers", 0);
 
   // DHT Temp/Humidity sensor
   dht.begin();
